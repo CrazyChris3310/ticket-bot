@@ -1,0 +1,21 @@
+{
+  "name": "bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon ."
+  },
+  "type": "module",
+  "author": "danil1209",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "eslint": "^9.14.0",
+    "jsdom": "^25.0.1",
+    "nodemon": "^3.1.7",
+    "prettier": "^3.3.3",
+    "telegraf": "^4.16.3"
+  }
+}
