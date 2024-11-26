@@ -6,9 +6,12 @@ class AleksandrinskyService extends TheaterService {
 
     baseUrl = 'https://alexandrinsky.ru';
     repertoirUrl = this.baseUrl + '/afisha-i-bilety/repertuar/';
+    showInfoUrl = this.baseUrl + '/afisha-i-bilety/';
     PAGE_SIZE = 5;
 
-    repertoir = memoizeWithExpiration(this.#fetchRepertoir.bind(this), 10, 'second');
+    showsCache = {}
+
+    repertoir = memoizeWithExpiration(this.#fetchRepertoir.bind(this), 10, 'minute');
 
     async getRepertoir(pageNum) {
         return this.repertoir();
@@ -18,7 +21,9 @@ class AleksandrinskyService extends TheaterService {
         let response = await fetch(this.repertoirUrl);
         let text = await response.text();
         let body = new JSDOM(text).window.document;
-        return this.parseRepertoir(body);
+        let newShows= this.parseRepertoir(body);
+        // newShows.forEach((show) => this.showsCache[show.numId] = memoizeWithExpiration(() => this.#fetchShowInfo(show.url)), 10, 'minute');
+        return newShows;
     }
 
     parseRepertoir(body) {
@@ -27,10 +32,41 @@ class AleksandrinskyService extends TheaterService {
         return Array.from(showNodes).map(this.buildShow.bind(this));
     }
 
-    buildShow(node) {
+    buildShow(node, idx) {
         let name = node.querySelector("h4 a").innerHTML;
         let specUrl = this.baseUrl + node.querySelector("h4 a").href ;
-        return { name, url: specUrl };
+        return { numId: idx, name, url: specUrl, performances: memoizeWithExpiration(() => this.#fetchShowInfo(specUrl), 10, 'minute') };
+    }
+    
+    async getShowInfo(numId) {
+        // return this.showsCache[numId]();
+        return (await this.repertoir())[numId]
+    }
+
+    async #fetchShowInfo(showUrl) {
+        let response = await fetch(showUrl);
+        let text = await response.text();
+        let body = new JSDOM(text).window.document;
+        return this.parseShow(body);
+    }
+
+    parseShow(body) {
+        let performanceNodes = body.querySelectorAll("div.box-events div.box-events-list_group");
+        return Array.from(performanceNodes).map(this.buildPerformance.bind(this));
+    }
+
+    buildPerformance(show) {
+        let date = show.querySelector(".box-events-list_group-date").innerHTML
+        let weekDay = show.querySelector(".box-events-list_group-date-1").innerHTML
+        let time = show.querySelector(".box-broadcasts_time span").innerHTML
+        let buyTicketText = show.querySelector(".box-link.btn-choose-location a").innerHTML
+    
+        return {
+            date: date,
+            weekDay: weekDay,
+            time: time,
+            ticketsAvailable: buyTicketText.includes("Купить билет")
+        }
     }
 
 }

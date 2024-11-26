@@ -16,6 +16,7 @@
     "jsdom": "^25.0.1",
     "nodemon": "^3.1.7",
     "prettier": "^3.3.3",
-    "telegraf": "^4.16.3"
+    "telegraf": "^4.16.3",
+    "ydb-sdk": "^5.8.0"
   }
 }

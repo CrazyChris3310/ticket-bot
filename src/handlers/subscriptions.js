@@ -8,7 +8,7 @@ export default ctx => {
     const markup = Markup.inlineKeyboard(
       [ 
         Markup.button.callback('Меню', `start`),
-        Markup.button.callback('Отменить', `cancel_subscription`),
+        Markup.button.callback('Отменить', `subscribe::${theaterName}::${numId}::${info.numId}`),
       ],
       { wrap },
     );
