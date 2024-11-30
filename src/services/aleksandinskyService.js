@@ -34,8 +34,10 @@ class AleksandrinskyService extends TheaterService {
 
     buildShow(node, idx) {
         let name = node.querySelector("h4 a").innerHTML;
-        let specUrl = this.baseUrl + node.querySelector("h4 a").href ;
-        return { numId: idx, name, url: specUrl, performances: memoizeWithExpiration(() => this.#fetchShowInfo(specUrl), 10, 'minute') };
+        let relLink = node.querySelector("h4 a").href;
+        let showId = relLink.match("afisha-i-bilety/(\\w+)/*")[1]
+        let specUrl = this.baseUrl + relLink;
+        return { numId: idx, name, showId, url: specUrl, performances: memoizeWithExpiration(() => this.#fetchShowInfo(specUrl), 10, 'minute') };
     }
     
     async getShowInfo(numId) {
