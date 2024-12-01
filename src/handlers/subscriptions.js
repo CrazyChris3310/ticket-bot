@@ -14,15 +14,16 @@ export default async ctx => {
           ],
           { wrap },
         );
-        send(ctx, buildMessage(ctx.chat.id), { parse_mode: 'markdown', reply_markup: markup.reply_markup });
+        send(ctx, await buildMessage(ctx.chat.id), { parse_mode: 'markdown', reply_markup: markup.reply_markup });
       } catch (err) {
         console.error(err);
       }
     };
     
-    function buildMessage(chat_id) {
-        let message = '**Subscriptions**\n'
-        dbService.findSubscriptions(chat_id).forEach(it => message += `[${it.name} - ${it.theater}](${it.url})\n`)
+    async function buildMessage(chat_id) {
+        let message = '**Подписки**\n'
+        let subs = await dbService.findSubscriptions(chat_id)
+        subs.forEach(it => message += `[${it.showname} - ${it.theatername}](${it.url})\n`)
         return message;
     }
     

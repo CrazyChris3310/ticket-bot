@@ -12,10 +12,11 @@ export default async ctx => {
     let theater = theaters.find(it => it.tag === theaterTag);
 
     let showInfo = await theater.getShowInfo(showId);
-    if (dbService.findSubscriptions(ctx.chat.id, showInfo.showId).length === 0) {
-        dbService.addSubscription({name: showInfo.name, theater: theater.name, showId: showInfo.showId, url: showInfo.url, chat_id: ctx.chat.id});
+    let subs = await dbService.findSubscriptions(ctx.chat.id, showInfo.showId);
+    if (subs.length === 0) {
+        await dbService.addSubscription({showName: showInfo.name, theaterName: theater.name, showId: showInfo.showId, url: showInfo.url, chat_id: ctx.chat.id});
     } else {
-        dbService.removeSubscription(ctx.chat.id, showInfo.showId);
+        await dbService.removeSubscription(ctx.chat.id, showInfo.showId);
     }
 
   try {
@@ -26,14 +27,15 @@ export default async ctx => {
       ],
       { wrap },
     );
-    send(ctx, buildMessage(ctx.chat.id), { parse_mode: 'markdown', reply_markup: markup.reply_markup });
+    send(ctx, await buildMessage(ctx.chat.id), { parse_mode: 'markdown', reply_markup: markup.reply_markup });
   } catch (err) {
     console.error(err);
   }
 };
 
-function buildMessage(chat_id) {
+async function buildMessage(chat_id) {
     let message = '**Subscriptions**\n'
-    dbService.findSubscriptions(chat_id).forEach(it => message += `[${it.name} - ${it.theater}](${it.url})\n`)
+    let subs = await dbService.findSubscriptions(chat_id)
+    subs.forEach(it => message += `[${it.showname} - ${it.theatername}](${it.url})\n`)
     return message;
 }
