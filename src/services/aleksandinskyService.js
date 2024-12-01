@@ -4,6 +4,10 @@ import { memoizeWithExpiration, Pageable } from "../util/index.js";
 
 class AleksandrinskyService extends TheaterService {
 
+    name = 'Александринский';
+
+    tag = 'aleksandrinsky';
+
     baseUrl = 'https://alexandrinsky.ru';
     repertoirUrl = this.baseUrl + '/afisha-i-bilety/repertuar/';
     showInfoUrl = this.baseUrl + '/afisha-i-bilety/';

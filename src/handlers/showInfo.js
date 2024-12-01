@@ -1,13 +1,15 @@
 import { Markup } from 'telegraf';
 import send from '../helpers/send.js';
-import aleksandrnka from '../services/aleksandinskyService.js';
+import theaters from '../services/index.js';
 
 const wrap = (btn, index, currentRow) => currentRow.length > 2;
 
 export default async ctx => {
     const [theaterName, numId] = ctx.match.slice(1);
 
-    let showInfo = await aleksandrnka.getShowInfo(numId);
+    let theater = theaters.find(theater => theater.tag === theaterName);
+
+    let showInfo = await theater.getShowInfo(numId);
     let perfs = await showInfo.performances();
 
   try {
