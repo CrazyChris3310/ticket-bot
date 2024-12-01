@@ -9,7 +9,7 @@ export default ctx => {
         .concat(Markup.button.callback('Меню', `start`)),
       { wrap: () => true },
     );
-    send(ctx, '<b>Theaters</b>', { parse_mode: 'html', reply_markup: markup.reply_markup });
+    send(ctx, '<b>Театры</b>', { parse_mode: 'html', reply_markup: markup.reply_markup });
   } catch (err) {
     console.error(err);
   }

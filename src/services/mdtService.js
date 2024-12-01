@@ -4,6 +4,7 @@ import { memoizeWithExpiration, Pageable } from "../util/index.js";
 class MdtService extends TheaterService {
 
     name = 'МДТ';
+    fullName = 'Малый Драматический Театр - Театр Европы'
     tag = 'mdt';
 
     baseUrl = 'https://mdt-dodin.ru';

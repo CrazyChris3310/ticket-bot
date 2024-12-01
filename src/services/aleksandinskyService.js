@@ -4,7 +4,8 @@ import { memoizeWithExpiration, Pageable } from "../util/index.js";
 
 class AleksandrinskyService extends TheaterService {
 
-    name = 'Александринский';
+    name = 'Александринский театр';
+    fullName = 'Александринский театр';
 
     tag = 'aleksandrinsky';
 

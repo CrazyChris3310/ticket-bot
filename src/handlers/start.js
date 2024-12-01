@@ -12,7 +12,7 @@ export default ctx => {
     ],
       { wrap },
     );
-    send(ctx, '<b>Theaters</b>', { parse_mode: 'html', reply_markup: markup.reply_markup });
+    send(ctx, '<b>Главное меню</b>', { parse_mode: 'html', reply_markup: markup.reply_markup });
   } catch (err) {
     console.error(err);
   }

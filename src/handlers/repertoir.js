@@ -6,9 +6,9 @@ const wrap = (btn, index, currentRow) => currentRow.length >= index / 1;
 
 export default async ctx => {
   try {
-    const [theaterName, pageNum] = ctx.match.slice(1);
+    const [theaterTag, pageNum] = ctx.match.slice(1);
 
-    let theater = theaters.find(it => it.tag === theaterName)
+    let theater = theaters.find(it => it.tag === theaterTag)
 
     let repertoir = await theater.getRepertoir(pageNum);
 
@@ -23,7 +23,7 @@ export default async ctx => {
       { wrap: (xx, index, currentRow) => currentRow.length > 1 },
     );
 
-    send(ctx, `<b>${theaterName}</b>`, { parse_mode: 'html', reply_markup: markup.reply_markup });
+    send(ctx, `<b>${theater.fullName}</b>`, { parse_mode: 'html', reply_markup: markup.reply_markup });
   } catch (err) {
     console.error(err);
   }
