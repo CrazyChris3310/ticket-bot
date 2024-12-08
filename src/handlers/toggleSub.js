@@ -11,10 +11,10 @@ export default async ctx => {
 
     let theater = theaters.find(it => it.tag === theaterTag);
 
-    let showInfo = await theater.getShowInfo(showId);
+    let showInfo = await theater.getShowInfoByNumId(showId);
     let subs = await dbService.findSubscriptions(ctx.chat.id, showInfo.showId);
     if (subs.length === 0) {
-        await dbService.addSubscription({showName: showInfo.name, theaterName: theater.name, showId: showInfo.showId, url: showInfo.url, chat_id: ctx.chat.id});
+        await dbService.addSubscription({showName: showInfo.name, theaterName: theater.name, showId: showInfo.showId, url: showInfo.url, chat_id: ctx.chat.id, theater_tag: theaterTag });
     } else {
         await dbService.removeSubscription(ctx.chat.id, showInfo.showId);
     }

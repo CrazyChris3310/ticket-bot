@@ -23,9 +23,10 @@ class AleksandrinskyService extends TheaterService {
     }
 
     async #fetchRepertoir() {
-        let response = await fetch(this.repertoirUrl);
-        let text = await response.text();
-        let body = new JSDOM(text).window.document;
+        let body = await this.doGet(this.repertoirUrl)
+        if (body.isError) {
+            return [];
+        }
         let newShows= this.parseRepertoir(body);
         // newShows.forEach((show) => this.showsCache[show.numId] = memoizeWithExpiration(() => this.#fetchShowInfo(show.url)), 10, 'minute');
         return newShows;
@@ -45,15 +46,16 @@ class AleksandrinskyService extends TheaterService {
         return { numId: idx, name, showId, url: specUrl, performances: memoizeWithExpiration(() => this.#fetchShowInfo(specUrl), 10, 'minute') };
     }
     
-    async getShowInfo(numId) {
+    async getShowInfoByNumId(numId) {
         // return this.showsCache[numId]();
         return (await this.repertoir())[numId]
     }
 
     async #fetchShowInfo(showUrl) {
-        let response = await fetch(showUrl);
-        let text = await response.text();
-        let body = new JSDOM(text).window.document;
+        let body = await this.doGet(showUrl);
+        if (body.isError) {
+            return [];
+        }
         return this.parseShow(body);
     }
 

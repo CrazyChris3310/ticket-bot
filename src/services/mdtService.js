@@ -54,7 +54,7 @@ class MdtService extends TheaterService {
         return { numId: idx, name, showId, url: specUrl, performances: memoizeWithExpiration(() => this.#fetchShowInfo(specUrl), 10, 'minute') };
     }
     
-    async getShowInfo(numId) {
+    async getShowInfoByNumId(numId) {
         // return this.showsCache[numId]();
         return (await this.repertoir())[numId]
     }
@@ -65,8 +65,15 @@ class MdtService extends TheaterService {
 
     async #fecthBasicShowInfo(showUrl) {
         let body = await this.doGet(showUrl);
-        let performanceListRelLink = body.querySelector("div.all_date_link a").href
-        body = await this.doGet(this.baseUrl + performanceListRelLink);
+        if (body.isError) {
+            return [];
+        }
+        let performanceListRelLinkElement = body.querySelector("div.all_date_link a")
+        if (performanceListRelLinkElement == null) {
+            console.error(body.error);
+            return [];
+        }
+        body = await this.doGet(this.baseUrl + performanceListRelLinkElement.href);
         return this.parseShow(body);
     }
 

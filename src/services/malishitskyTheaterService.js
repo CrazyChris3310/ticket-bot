@@ -26,6 +26,10 @@ class AleksandrinskyService extends TheaterService {
 
     async #fetchRepertoir() {
         let body = await this.doGet(this.showsInfoUrl);
+        if (body.isError) {
+            log.error("error happend while fetch in " + this.name + '. ' + error);
+            return [];
+        }
         let afisha = this.parseAfisha(body);
         let newShows = {}
         let counter = 0
@@ -120,7 +124,7 @@ class AleksandrinskyService extends TheaterService {
         }
     }
 
-    async getShowInfo(numId) {
+    async getShowInfoByNumId(numId) {
         return (await this.repertoir())[numId]
     }
 

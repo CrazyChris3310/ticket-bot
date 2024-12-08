@@ -5,6 +5,9 @@ class DbService {
     subscriptions = []
 
     async findSubscriptions(chat_id, showId) {
+        if (!chat_id) {
+            return this.#doSelect('select * from subscriptions')
+        }
         if (!showId) {
             // return this.subscriptions.filter(subscription => subscription.chat_id === chat_id);
             return this.#doSelect('select * from subscriptions where chat_id = $1', [chat_id])
@@ -26,7 +29,7 @@ class DbService {
     async addSubscription(subscription) {
         // this.subscriptions.push(subscription);
         try {
-            const result = await pool.query("insert into subscriptions (showname, theatername, showid, url, chat_id) values ($1, $2, $3, $4, $5)", [subscription.showName, subscription.theaterName, subscription.showId, subscription.url, subscription.chat_id]);
+            const result = await pool.query("insert into subscriptions (showname, theatername, showid, url, chat_id, theater_tag) values ($1, $2, $3, $4, $5, $6)", [subscription.showName, subscription.theaterName, subscription.showId, subscription.url, subscription.chat_id, subscription.theater_tag]);
             // return result.rows;
         } catch (err) {
             console.error(err);

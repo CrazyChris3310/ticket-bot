@@ -9,13 +9,14 @@ export default async ctx => {
 
     let theater = theaters.find(theater => theater.tag === theaterName);
 
-    let showInfo = await theater.getShowInfo(numId);
+    let showInfo = await theater.getShowInfoByNumId(numId);
     let perfs = await showInfo.performances();
 
   try {
     const markup = Markup.inlineKeyboard(
         perfs.map(info => Markup.button.callback(info.date + ' ' + info.weekDay + ' ' + info.time, `toggle_sub::${theaterName}::${numId}::${1}`))
         .concat(
+            [Markup.button.callback('Подписаться', `toggle_sub::${theaterName}::${numId}::1`)],
             [Markup.button.callback('Back', `repertoir::${theaterName}`)]
         ),
       { wrap: (xx, idx, array) => true}
@@ -28,6 +29,9 @@ export default async ctx => {
 
 function buildMessage(showInfo, perfs) {
     let result = `[${showInfo.name}](${showInfo.url})\n`;
+    if (perfs.length === 0) {
+        result += 'Спектаклей не запланировано';
+    }
     for (let performanceInfo of perfs) {
         result += performanceInfo.date + ' ' + performanceInfo.weekDay + ' ' + performanceInfo.time + ' ' + (performanceInfo.ticketsAvailable ? '[v]' : '[x]') + '\n';
     }
