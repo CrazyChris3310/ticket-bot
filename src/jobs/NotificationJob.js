@@ -25,6 +25,9 @@ class NotificationJob {
             let theater = theaters.get(sub.theater_tag)
             let showInfo = await theater.getShowInfoByShowId(sub.showid);
             let perfs = await showInfo.performances();
+            if (sub.type === 'PERFORMANCE') {
+                perfs = perfs.filter(perf => perf.idx === sub.perf_idx);
+            }
             let showNotifications = {
                 chat_id: sub.chat_id,
                 theater: sub.theatername,

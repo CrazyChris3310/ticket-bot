@@ -14,9 +14,9 @@ export default async ctx => {
 
   try {
     const markup = Markup.inlineKeyboard(
-        perfs.map(info => Markup.button.callback(info.date + ' ' + info.weekDay + ' ' + info.time, `toggle_sub::${theaterName}::${numId}::${1}`))
+        perfs.map((info, idex) => Markup.button.callback(info.date + ' ' + info.weekDay + ' ' + info.time, `toggle_sub::${theaterName}::${numId}::${idex}`))
         .concat(
-            [Markup.button.callback('Подписаться', `toggle_sub::${theaterName}::${numId}::1`)],
+            [Markup.button.callback('Подписаться', `toggle_sub::${theaterName}::${numId}`)],
             [Markup.button.callback('Back', `repertoir::${theaterName}`)]
         ),
       { wrap: (xx, idx, array) => true}

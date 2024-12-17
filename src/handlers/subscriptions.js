@@ -5,11 +5,10 @@ import dbService from '../services/dbService.js';
 const wrap = (btn, index, currentRow) => currentRow.length > 2;
 
 export default async ctx => {
-    const [theaterName, showId, perfId] = ctx.match.slice(1);
+
     try {
         const markup = Markup.inlineKeyboard(
           [
-            Markup.button.callback('Отписаться', `toggle_sub::${theaterName}::${showId}::${perfId}`),
             Markup.button.callback('Назад', `start`),
           ],
           { wrap },
@@ -23,7 +22,15 @@ export default async ctx => {
     async function buildMessage(chat_id) {
         let message = '**Подписки**\n'
         let subs = await dbService.findSubscriptions(chat_id)
-        subs.forEach(it => message += `[${it.showname} - ${it.theatername}](${it.url})\n`)
+        subs.forEach(it => message += buildLine(it))
         return message;
+    }
+
+    function buildLine(sub) {
+      let result = `[${sub.showname} - ${sub.theatername}`
+      if (sub.type === 'PERFORMANCE') {
+        result += ` - ${sub.date}`
+      }
+      return result + `](${sub.url})\n`
     }
     

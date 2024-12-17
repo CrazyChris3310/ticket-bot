@@ -7,16 +7,25 @@ import theaters from '../services/index.js';
 const wrap = (btn, index, currentRow) => currentRow.length > 2;
 
 export default async ctx => {
-    const [theaterTag, showId, perfId] = ctx.match.slice(1);
+    const [theaterTag, showId, perfNumid] = ctx.match.slice(1);
 
     let theater = theaters.find(it => it.tag === theaterTag);
 
     let showInfo = await theater.getShowInfoByNumId(showId);
-    let subs = await dbService.findSubscriptions(ctx.chat.id, showInfo.showId);
-    if (subs.length === 0) {
-        await dbService.addSubscription({showName: showInfo.name, theaterName: theater.name, showId: showInfo.showId, url: showInfo.url, chat_id: ctx.chat.id, theater_tag: theaterTag });
+
+    let subType = null
+    let perf = {}
+    if (perfNumid != null) {
+      subType = 'PERFORMANCE';
+      let perfs = await showInfo.performances();
+      perf = perfs[perfNumid]
     } else {
-        await dbService.removeSubscription(ctx.chat.id, showInfo.showId);
+      subType = 'SHOW';
+    }
+
+    let subs = await dbService.findSubscriptions(ctx.chat.id, showInfo, perf.idx);
+    if (subs.length === 0) {
+        await dbService.addSubscription({showName: showInfo.name, theaterName: theater.name, showId: showInfo.showId, url: showInfo.url, chat_id: ctx.chat.id, theater_tag: theaterTag, type: subType, perf_idx: perf.idx, date: perf.date });
     }
 
   try {

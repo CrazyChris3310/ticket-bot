@@ -71,6 +71,7 @@ class AleksandrinskyService extends TheaterService {
         let buyTicketText = show.querySelector(".box-link.btn-choose-location a").innerHTML
     
         return {
+            idx: date + "_" + weekDay,
             date: date,
             weekDay: weekDay,
             time: time,

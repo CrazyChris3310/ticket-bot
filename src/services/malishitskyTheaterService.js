@@ -92,6 +92,7 @@ class AleksandrinskyService extends TheaterService {
         let tcInfo = this.#extractTcInfo(tcUrl)
 
         return {
+            idx: tcInfo.event,
             name: name,
             showId: name,
             date: day + ' ' + month,

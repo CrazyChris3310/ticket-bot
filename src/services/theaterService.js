@@ -13,6 +13,12 @@ export default class TheaterService {
         return shows.find(show => show.showId === showId);
     }
 
+    async getPerformanceInfo(showId, performanceId) {
+        let showInfo = await this.getShowInfoByShowId(showId);
+        let perfs = await showInfo.performances();
+        return perfs.find(perf => perf.idx === performanceId);
+    }
+
     async doGet(url) {
         try {
             let response = await fetch(url);

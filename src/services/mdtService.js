@@ -85,10 +85,6 @@ class MdtService extends TheaterService {
         return performances;
     }
 
-    parseAvailablities(body) {
-        body.querySelector("")
-    }
-
     async doPost(url, body) {
         const response = await fetch(url, {
             method: 'POST',
@@ -107,6 +103,7 @@ class MdtService extends TheaterService {
         let internalId = show.querySelector("li:last-child").dataset.hwmEventId
     
         return {
+            idx: internalId,
             internalId: internalId,
             date: day + " " + month,
             weekDay: weekDay,
