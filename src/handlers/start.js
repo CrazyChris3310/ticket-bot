@@ -7,7 +7,7 @@ export default ctx => {
   try {
     const markup = Markup.inlineKeyboard(
       [ 
-        Markup.button.callback('Театры', `theater_list`),
+        Markup.button.callback('Театры', `theaters`),
         Markup.button.callback('Мои подписки', `subscriptions`),
     ],
       { wrap },

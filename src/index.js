@@ -16,9 +16,9 @@ bot.start(startHandler);
 bot.action('start', startHandler);
 bot.action(/^repertoir(?:::(\w+))(?:::(\d+))*$/, repertoirHandler);
 bot.action('subscriptions', subscriptionsHandler);
-bot.action('theater_list', theatersHandler);
-bot.action(/^show_info(?:::(\w+))(?:::(\d+))$/, showInfoHandler);
-bot.action(/^toggle_sub(?:::(\w+))(?:::(\d+))(?:::(\d+))$/, toggleSubHandler);
+bot.action('theaters', theatersHandler);
+bot.action(/^show(?:::(\w+))(?:::(\d+))$/, showInfoHandler);
+bot.action(/^toggle_sub(?:::(\w+))(?:::(\d+))(?:::(\d+))?$/, toggleSubHandler);
 
 bot.launch();
 

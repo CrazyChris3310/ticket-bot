@@ -12,6 +12,8 @@ export default async ctx => {
     let showInfo = await theater.getShowInfoByNumId(numId);
     let perfs = await showInfo.performances();
 
+    console.log(`toggle_sub::${theaterName}::${numId}`);
+
   try {
     const markup = Markup.inlineKeyboard(
         perfs.map((info, idex) => Markup.button.callback(info.date + ' ' + info.weekDay + ' ' + info.time, `toggle_sub::${theaterName}::${numId}::${idex}`))

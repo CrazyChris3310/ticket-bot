@@ -7,7 +7,7 @@ class AleksandrinskyService extends TheaterService {
     name = 'Камерный Театр Малышицкого';
     fullName = 'Камерный Театр Малышицкого';
 
-    tag = 'malishitsky';
+    tag = 'ktm';
 
     baseUrl = 'https://www.vmtheatre.ru';
     repertoirUrl = this.baseUrl + '/productions';

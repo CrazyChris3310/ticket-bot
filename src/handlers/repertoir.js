@@ -14,10 +14,10 @@ export default async ctx => {
 
     const markup = Markup.inlineKeyboard(
       repertoir.map(it => 
-        Markup.button.callback(it.name, `show_info::${theater.tag}::${it.numId}`)
+        Markup.button.callback(it.name, `show::${theater.tag}::${it.numId}`)
       ).concat(
         [
-            Markup.button.callback('Back', `theater_list`)
+            Markup.button.callback('Back', `theaters`)
         ]
       ),
       { wrap: (xx, index, currentRow) => currentRow.length > 1 },
